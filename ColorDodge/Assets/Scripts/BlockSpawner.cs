@@ -19,6 +19,8 @@ public class BlockSpawner : MonoBehaviour
 	private float spawnTimer;
 	private float difficultyTimer;
 
+	private float speed1;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -26,7 +28,7 @@ public class BlockSpawner : MonoBehaviour
 		blockCount = 0;
 
 		colors = new Color32[5];
-		colors[0] = new Color32(148, 0, 211, 255);
+		colors[0] = new Color32(255, 0, 255, 255);
 		colors[1] = new Color32(0, 0, 255, 255);
 		colors[2] = new Color32(0, 255, 0, 255);
 		colors[3] = new Color32(255, 255, 0, 255);
@@ -41,6 +43,8 @@ public class BlockSpawner : MonoBehaviour
 
 		spawnTimer = 1.0f;
 		difficultyTimer = 0.0f;
+
+		speed1 = 20.0f;
 	}
 
     // Update is called once per frame
@@ -55,7 +59,7 @@ public class BlockSpawner : MonoBehaviour
 			{
 				color = colors[RandomHolder.rng.Next(5)];
 				position = positions[RandomHolder.rng.Next(5)];
-				CreateBlock(10.0f);
+				CreateBlock(speed1 * 1.0f);
 
 				spawnTimer = 0.0f;
 			}
@@ -66,7 +70,7 @@ public class BlockSpawner : MonoBehaviour
 			{
 				color = colors[RandomHolder.rng.Next(5)];
 				position = positions[RandomHolder.rng.Next(5)];
-				CreateBlock(15.0f);
+				CreateBlock(speed1 * 1.5f);
 
 				spawnTimer = 0.0f;
 			}
@@ -79,10 +83,10 @@ public class BlockSpawner : MonoBehaviour
 
 				color = colors[RandomHolder.rng.Next(5)];   //first block
 				position = positions[num];
-				CreateBlock(15.0f);
+				CreateBlock(speed1 * 1.5f);
 
 				TwoBlockPosition();
-				CreateBlock(15.0f);
+				CreateBlock(speed1 * 1.5f);
 				blocksHolder[blockCount - 1].transform.position = new Vector2(blocksHolder[blockCount - 1].transform.position.x, blocksHolder[blockCount - 2].transform.position.y);	//sets blocks to same y position
 
 				spawnTimer = 0.0f;
@@ -96,10 +100,10 @@ public class BlockSpawner : MonoBehaviour
 
 				color = colors[RandomHolder.rng.Next(5)];   //first block
 				position = positions[num];
-				CreateBlock(15.0f);
+				CreateBlock(speed1 * 1.5f);
 
 				TwoBlockPosition();
-				CreateBlock(15.0f);
+				CreateBlock(speed1 * 1.5f);
 
 				spawnTimer = 0.0f;
 			}

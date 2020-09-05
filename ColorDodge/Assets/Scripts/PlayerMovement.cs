@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		speed = 50.0f;
+		speed = 70.0f;
 		rb = GetComponent<Rigidbody2D>();
 		rb.freezeRotation = true;
 
