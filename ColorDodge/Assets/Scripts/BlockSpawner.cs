@@ -14,6 +14,7 @@ public class BlockSpawner : MonoBehaviour
 
 	Vector2[] positions;
 	Vector2 position;
+	private int num;
 
 	private float spawnTimer;
 	private float difficultyTimer;
@@ -38,7 +39,7 @@ public class BlockSpawner : MonoBehaviour
 		positions[3] = new Vector2(3, 11.75f);
 		positions[4] = new Vector2(6, 11.75f);
 
-		spawnTimer = 0.0f;
+		spawnTimer = 1.0f;
 		difficultyTimer = 0.0f;
 	}
 
@@ -46,30 +47,79 @@ public class BlockSpawner : MonoBehaviour
     void Update()
     {
 		spawnTimer += Time.deltaTime;
+		difficultyTimer += Time.deltaTime;
 
-		if (spawnTimer > 1.0f)
+		if (difficultyTimer < 15.0f)    //difficulty level 1
 		{
-			color = colors[RandomHolder.rng.Next(5)];
-			position = positions[RandomHolder.rng.Next(5)];
-			CreateBlock();
+			if (spawnTimer > 1.0f)
+			{
+				color = colors[RandomHolder.rng.Next(5)];
+				position = positions[RandomHolder.rng.Next(5)];
+				CreateBlock(10.0f);
 
-			spawnTimer = 0.0f;
-			Debug.Log("Spawn");
+				spawnTimer = 0.0f;
+			}
+		}
+		else if (difficultyTimer < 30.0f)   //difficult level 2
+		{
+			if (spawnTimer > .66f)
+			{
+				color = colors[RandomHolder.rng.Next(5)];
+				position = positions[RandomHolder.rng.Next(5)];
+				CreateBlock(15.0f);
+
+				spawnTimer = 0.0f;
+			}
+		}
+		else if (difficultyTimer < 45.0f)   //difficulty level 3
+		{
+			if (spawnTimer > .66f)
+			{
+				num = RandomHolder.rng.Next(5);
+
+				color = colors[RandomHolder.rng.Next(5)];   //first block
+				position = positions[num];
+				CreateBlock(15.0f);
+
+				TwoBlockPosition();
+				CreateBlock(15.0f);
+				blocksHolder[blockCount - 1].transform.position = new Vector2(blocksHolder[blockCount - 1].transform.position.x, blocksHolder[blockCount - 2].transform.position.y);	//sets blocks to same y position
+
+				spawnTimer = 0.0f;
+			}
+		}
+		else if (difficultyTimer < 60.0f)	//difficulty level 4
+		{
+			if (spawnTimer > .33f)
+			{
+				num = RandomHolder.rng.Next(5);
+
+				color = colors[RandomHolder.rng.Next(5)];   //first block
+				position = positions[num];
+				CreateBlock(15.0f);
+
+				TwoBlockPosition();
+				CreateBlock(15.0f);
+
+				spawnTimer = 0.0f;
+			}
 		}
     }
 
-	protected void CreateBlock()
+	protected void CreateBlock(float speed)
 	{
-		addBlock(Instantiate(blockPrefab, position, color));
+		addBlock(Instantiate(blockPrefab, position, color, speed));
 	}
 
-	public static GameObject Instantiate(GameObject prefab, Vector2 position, Color32 color)
+	public static GameObject Instantiate(GameObject prefab, Vector2 position, Color32 color, float speed)
 	{
-		GameObject block = Object.Instantiate(prefab) as GameObject;
+		GameObject block = Instantiate(prefab) as GameObject;
 		block.transform.position = position;
 
 		Renderer renderer1 = block.GetComponent<Renderer>();
 		renderer1.material.color = color;
+
+		block.GetComponent<Block>().speed = speed;
 
 		return block;
 	}
@@ -88,5 +138,31 @@ public class BlockSpawner : MonoBehaviour
 			blocksHolder[i] = blocksHolder[i + 1];
 		}
 		blockCount--;
+	}
+
+	/// <summary>
+	/// assigns position of second block in pair
+	/// </summary>
+	private void TwoBlockPosition()
+	{
+		if (num == 0)
+		{
+			position = positions[1];
+		}
+		else if (num == 4)
+		{
+			position = positions[3];
+		}
+		else
+		{
+			if (RandomHolder.rng.Next(2) == 1)
+			{
+				position = positions[num + 1];
+			}
+			else
+			{
+				position = positions[num - 1];
+			}
+		}
 	}
 }

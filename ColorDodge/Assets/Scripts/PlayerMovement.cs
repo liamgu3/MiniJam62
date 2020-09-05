@@ -7,12 +7,20 @@ public class PlayerMovement : MonoBehaviour
 {
 	private float speed;
 
+	private Rigidbody2D rb;
+	private Vector2 hMove;
+	private Vector2 vMove;
+
     // Start is called before the first frame update
     void Start()
     {
-		speed = 10.0f;
-		GetComponent<Rigidbody2D>().freezeRotation = true;
-    }
+		speed = 50.0f;
+		rb = GetComponent<Rigidbody2D>();
+		rb.freezeRotation = true;
+
+		hMove = Vector2.zero;
+		vMove = Vector2.zero;
+	}
 
     // Update is called once per frame
     void Update()
@@ -20,30 +28,40 @@ public class PlayerMovement : MonoBehaviour
 		if (Input.GetKey(KeyCode.W))
 		{
 			//transform.position = new Vector2(transform.position.x, transform.position.y + speed);
-			transform.Translate(Vector2.up * speed * Time.deltaTime);
+			//rb.MovePosition(rb.position + Vector2.up * speed * Time.deltaTime);
+			vMove = Vector2.up * speed * Time.deltaTime;
 		}
-
-		if (Input.GetKey(KeyCode.S))
+		else if (Input.GetKey(KeyCode.S))
 		{
 			//transform.position = new Vector2(transform.position.x, transform.position.y - speed);
-			transform.Translate(-Vector2.up * speed * Time.deltaTime);
+			//rb.MovePosition(rb.position + -Vector2.up * speed * Time.deltaTime);
+			vMove = -Vector2.up * speed * Time.deltaTime;
+		}
+		else
+		{
+			vMove = Vector2.zero;
 		}
 
 		if (Input.GetKey(KeyCode.D))
 		{
 			//transform.position = new Vector2(transform.position.x + speed, transform.position.y);
-			transform.Translate(Vector2.right * speed * Time.deltaTime);
+			//rb.MovePosition(rb.position + Vector2.right * speed * Time.deltaTime);
+			hMove = Vector2.right * speed * Time.deltaTime;
 		}
-
-		if (Input.GetKey(KeyCode.A))
+		else if (Input.GetKey(KeyCode.A))
 		{
 			//transform.position = new Vector2(transform.position.x - speed, transform.position.y);
-			transform.Translate(-Vector2.right * speed * Time.deltaTime);
+			//rb.MovePosition(rb.position + -Vector2.right * speed * Time.deltaTime);
+			hMove = -Vector2.right * speed * Time.deltaTime;
+		}
+		else
+		{
+			hMove = Vector2.zero;
 		}
 	}
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void FixedUpdate()
 	{
-		Debug.Log("Collision");
+		rb.MovePosition(rb.position + (hMove + vMove) * speed * Time.deltaTime);
 	}
 }

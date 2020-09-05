@@ -38,13 +38,4 @@ public class killPlayer : MonoBehaviour
 			}
 		}
 	}
-
-	//private void OnCollisionEnter2D(Collision2D collision)
-	//{
-	//	if (collision.gameObject.layer == 8)        //checks if colliding object is player
-	//	{
-	//		Debug.Log("hit back wall");
-	//		collision.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
-	//	}
-	//}
 }
