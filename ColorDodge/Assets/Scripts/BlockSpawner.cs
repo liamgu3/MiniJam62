@@ -92,7 +92,7 @@ public class BlockSpawner : MonoBehaviour
 				spawnTimer = 0.0f;
 			}
 		}
-		else if (difficultyTimer < 60.0f)	//difficulty level 4
+		else// if (difficultyTimer < 60.0f)	//difficulty level 4
 		{
 			if (spawnTimer > .33f)
 			{
@@ -104,6 +104,7 @@ public class BlockSpawner : MonoBehaviour
 
 				TwoBlockPosition();
 				CreateBlock(speed1 * 1.5f);
+				blocksHolder[blockCount - 1].transform.position = new Vector2(blocksHolder[blockCount - 1].transform.position.x, blocksHolder[blockCount - 2].transform.position.y);    //sets blocks to same y position
 
 				spawnTimer = 0.0f;
 			}
