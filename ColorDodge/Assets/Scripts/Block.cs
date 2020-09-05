@@ -37,12 +37,4 @@ public class Block : MonoBehaviour
 		rb.MovePosition(rb.position + -Vector2.up * speed * Time.deltaTime);
 	}
 
-	//private void OnCollisionEnter2D(Collision2D collision)
-	//{
-	//	if (collision.gameObject.layer == 9)
-	//	{
-	//		Physics2D.IgnoreCollision(collision.collider, GetComponent<BoxCollider2D>());
-	//	}
-	//}
-
 }

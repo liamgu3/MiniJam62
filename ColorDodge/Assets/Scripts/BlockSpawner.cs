@@ -50,6 +50,11 @@ public class BlockSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		
+    }
+
+	private void FixedUpdate()
+	{
 		spawnTimer += Time.deltaTime;
 		difficultyTimer += Time.deltaTime;
 
@@ -87,7 +92,7 @@ public class BlockSpawner : MonoBehaviour
 
 				TwoBlockPosition();
 				CreateBlock(speed1 * 1.5f);
-				blocksHolder[blockCount - 1].transform.position = new Vector2(blocksHolder[blockCount - 1].transform.position.x, blocksHolder[blockCount - 2].transform.position.y);	//sets blocks to same y position
+				blocksHolder[blockCount - 1].transform.position = new Vector2(blocksHolder[blockCount - 1].transform.position.x, blocksHolder[blockCount - 2].transform.position.y);    //sets blocks to same y position
 
 				spawnTimer = 0.0f;
 			}
@@ -109,7 +114,7 @@ public class BlockSpawner : MonoBehaviour
 				spawnTimer = 0.0f;
 			}
 		}
-    }
+	}
 
 	protected void CreateBlock(float speed)
 	{
