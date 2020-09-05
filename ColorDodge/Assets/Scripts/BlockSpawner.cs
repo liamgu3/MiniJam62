@@ -6,36 +6,40 @@ public class BlockSpawner : MonoBehaviour
 {
 	public GameObject blockPrefab;
 
-	private Block[,] blocksHolder;
+	public GameObject[] blocksHolder;
+	public int blockCount;
 
-	Color[] colors;
-	Color color;
+	Color32[] colors;
+	Color32 color;
 
 	Vector2[] positions;
 	Vector2 position;
 
-	float spawnTimer;
+	private float spawnTimer;
+	private float difficultyTimer;
 
 	// Start is called before the first frame update
 	void Start()
     {
-		blocksHolder = new Block[5,3];
+		blocksHolder = new GameObject[50];
+		blockCount = 0;
 
-		colors = new Color[5];
-		colors[0] = Color.blue;
-		colors[1] = Color.green;
-		colors[2] = Color.yellow;
-		colors[3] = Color.magenta;
-		colors[4] = Color.red;
+		colors = new Color32[5];
+		colors[0] = new Color32(148, 0, 211, 255);
+		colors[1] = new Color32(0, 0, 255, 255);
+		colors[2] = new Color32(0, 255, 0, 255);
+		colors[3] = new Color32(255, 255, 0, 255);
+		colors[4] = new Color32(255, 127, 0, 255);
 
 		positions = new Vector2[5];
-		positions[0] = new Vector2(-6, 13.25f);
-		positions[1] = new Vector2(-3, 13.25f);
-		positions[2] = new Vector2(0, 13.25f);
-		positions[3] = new Vector2(3, 13.25f);
-		positions[4] = new Vector2(6, 13.25f);
+		positions[0] = new Vector2(-6, 11.75f);
+		positions[1] = new Vector2(-3, 11.75f);
+		positions[2] = new Vector2(0, 11.75f);
+		positions[3] = new Vector2(3, 11.75f);
+		positions[4] = new Vector2(6, 11.75f);
 
 		spawnTimer = 0.0f;
+		difficultyTimer = 0.0f;
 	}
 
     // Update is called once per frame
@@ -56,14 +60,33 @@ public class BlockSpawner : MonoBehaviour
 
 	protected void CreateBlock()
 	{
-		Instantiate(blockPrefab, position, color);
+		addBlock(Instantiate(blockPrefab, position, color));
 	}
 
-	public static Object Instantiate(GameObject prefab, Vector2 position, Color color)
+	public static GameObject Instantiate(GameObject prefab, Vector2 position, Color32 color)
 	{
 		GameObject block = Object.Instantiate(prefab) as GameObject;
 		block.transform.position = position;
-		block.GetComponent<SpriteRenderer>().color = color;
+
+		Renderer renderer1 = block.GetComponent<Renderer>();
+		renderer1.material.color = color;
+
 		return block;
+	}
+
+	protected void addBlock(GameObject block)
+	{
+		blocksHolder[blockCount] = block;
+		blockCount++;
+	}
+
+	public void removeBlock()
+	{
+		blocksHolder[0] = null;
+		for (int i = 0; i < blockCount; i++)
+		{
+			blocksHolder[i] = blocksHolder[i + 1];
+		}
+		blockCount--;
 	}
 }

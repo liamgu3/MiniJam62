@@ -5,32 +5,42 @@ using System;
 
 public class ColorChange : MonoBehaviour
 {
-	private Color[] colors;
+	private Color32[] colors;
 	private float changeTimer;
+
+	private Renderer renderer1;
+	public bool stopChange;
 
     // Start is called before the first frame update
     void Start()
     {
-		colors = new Color[5];
-		colors[0] = Color.blue;
-		colors[1] = Color.green;
-		colors[2] = Color.yellow;
-		colors[3] = Color.magenta;
-		colors[4] = Color.red;
+		colors = new Color32[5];
+		colors[0] = new Color32(148, 0, 211, 255);
+		colors[1] = new Color32(0, 0, 255, 255);
+		colors[2] = new Color32(0, 255, 0, 255);
+		colors[3] = new Color32(255, 255, 0, 255);
+		colors[4] = new Color32(255, 127, 0, 255);
 
 		changeTimer = 1.5f;
 
 		RandomHolder.rng = new System.Random();
+
+		renderer1 = gameObject.GetComponent<Renderer>();
+
+		stopChange = false;
 	}
 
     // Update is called once per frame
     void Update()
     {
-		changeTimer += Time.deltaTime;
+		if (!stopChange)
+		{
+			changeTimer += Time.deltaTime;
+		}
 
 		if (changeTimer > 1.0f)
 		{
-			GetComponent<SpriteRenderer>().color = colors[RandomHolder.rng.Next(5)];
+			renderer1.material.color = colors[RandomHolder.rng.Next(5)];
 
 			changeTimer = 0.0f;
 		}
