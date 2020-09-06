@@ -7,10 +7,12 @@ public class killPlayer : MonoBehaviour
 	private BlockSpawner blocksHolder;
 	private GameObject colorChange;
 	private GameObject player;
+	private GameObject player2;
 	private GameObject timer;
 	private GameObject highScore;
 	private AudioSource deathSound;
-	private GameObject camera;
+	private GameObject camera1;
+	public GameObject controls;
 
 	public bool playerKilled;
 
@@ -18,12 +20,12 @@ public class killPlayer : MonoBehaviour
 	void Start()
     {
 		blocksHolder = GameObject.Find("BlockSpawner").GetComponent<BlockSpawner>();
-		colorChange = GameObject.Find("Background");
 		player = GameObject.Find("Player");
 		timer = GameObject.Find("Timer");
 		highScore = GameObject.Find("HighScore");
 		deathSound = GetComponent<AudioSource>();
-		camera = GameObject.Find("Main Camera");
+		camera1 = GameObject.Find("Main Camera");
+		colorChange = GameObject.Find("Background");
 
 		playerKilled = false;
 	}
@@ -40,14 +42,26 @@ public class killPlayer : MonoBehaviour
 		{
 			timer.GetComponent<stopWatch>().stopTime = true;
 			highScore.GetComponent<HighScore>().saveHighScore(Time.time - timer.GetComponent<stopWatch>().startTime);
+			if (playerKilled)
+			{
+				player2.GetComponent<Collider2D>().enabled = false;
+				player2.GetComponent<PlayerMovement>().enabled = false;
+				player2.GetComponent<Rigidbody2D>().freezeRotation = false;
+				StartCoroutine(ScaleOverTime(2.0f, player2));    //shrinks
+			}
+			else
+			{
+				player.GetComponent<Collider2D>().enabled = false; 
+				player.GetComponent<PlayerMovement>().enabled = false;
+				player.GetComponent<Rigidbody2D>().freezeRotation = false;
+				StartCoroutine(ScaleOverTime(2.0f, player));    //shrinks
+			}
 			playerKilled = true;
-			camera.GetComponent<MusicController>().PauseMusic();
+			camera1.GetComponent<MusicController>().PauseMusic();
 			deathSound.Play();
 
 
-			player.GetComponent<Collider2D>().enabled = false;
-			player.GetComponent<PlayerMovement>().enabled = false;
-			player.GetComponent<Rigidbody2D>().freezeRotation = false;
+			
 
 			for(int i = 0; i < blocksHolder.blockCount; i++)
 			{
@@ -59,13 +73,16 @@ public class killPlayer : MonoBehaviour
 				colorChange.transform.GetChild(i).GetComponent<ColorChange>().stopChange = true;
 			}
 
-			StartCoroutine(ScaleOverTime(2.0f));    //shrinks
+
+			blocksHolder.enabled = false;
+			timer.GetComponent<stopWatch>().enabled = false;
+			highScore.GetComponent<HighScore>().enabled = false;
 		}
 
 		
 	}
 
-	IEnumerator ScaleOverTime(float time)
+	IEnumerator ScaleOverTime(float time, GameObject player)
 	{
 		Vector3 originalScale = player.transform.localScale;
 		Vector3 destinationScale = new Vector3(0.01f, 0.01f, 0.01f);
@@ -81,5 +98,11 @@ public class killPlayer : MonoBehaviour
 		} while (currentTime <= time);
 
 		Destroy(player);
+		controls.SetActive(true);
+	}
+
+	public void AssignPlayer(GameObject player2)
+	{
+		this.player2 = player2;
 	}
 }

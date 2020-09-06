@@ -11,26 +11,26 @@ public class HighScore : MonoBehaviour
 	private stopWatch timer;
 
 	public float scoreHigh;
-
+	private bool hasUpdated;
     // Start is called before the first frame update
     void Start()
     {
-        highScore = GetComponent<Text>();
-		timer = GameObject.Find("Timer").GetComponent<stopWatch>();
-
-		loadHighScore();
+		hasUpdated = false;
 	}
 
     // Update is called once per frame
     void Update()
     {
-        
+		if (!hasUpdated)
+		{
+			loadHighScore();
+			Debug.Log("called");
+			hasUpdated = true;
+		}
     }
 
 	public void saveHighScore(float score)
 	{
-		Debug.Log(score);
-		Debug.Log(scoreHigh);
 		if (score > scoreHigh)
 		{
 			try
@@ -59,5 +59,13 @@ public class HighScore : MonoBehaviour
 		{
 			Console.WriteLine("There was an error loading data.");
 		}
+	}
+
+	private void OnEnable()
+	{
+		highScore = GetComponent<Text>();
+		timer = GameObject.Find("Timer").GetComponent<stopWatch>();
+
+		loadHighScore();
 	}
 }

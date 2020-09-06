@@ -12,7 +12,7 @@ public class MusicController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		playerKilled = GameObject.Find("backWall").GetComponent<killPlayer>().playerKilled;
+		//playerKilled = GameObject.Find("backWall").GetComponent<killPlayer>().playerKilled;
 		music = GetComponent<AudioSource>();
 		musicChanged = false;
 		music.Play();
@@ -26,7 +26,11 @@ public class MusicController : MonoBehaviour
 
 	public void PauseMusic()
 	{
-		music.Pause();
-		Debug.Log("in here");
+		music.Stop();
+	}
+
+	public void PlayMusic()
+	{
+		music.Play();
 	}
 }

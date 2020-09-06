@@ -175,4 +175,23 @@ public class BlockSpawner : MonoBehaviour
 			}
 		}
 	}
+
+	private void OnEnable()
+	{
+		blocksHolder = new GameObject[50];
+		blockCount = 0;
+
+		spawnTimer = 1.0f;
+		difficultyTimer = 0.0f;
+	}
+
+	private void OnDisable()
+	{
+		GameObject[] blocksToDelete = GameObject.FindGameObjectsWithTag("Block");
+
+		foreach (GameObject block in blocksToDelete)
+		{
+			Destroy(block);
+		}
+	}
 }
