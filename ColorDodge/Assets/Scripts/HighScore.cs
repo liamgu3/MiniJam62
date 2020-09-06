@@ -12,6 +12,7 @@ public class HighScore : MonoBehaviour
 
 	public float scoreHigh;
 	private bool hasUpdated;
+	private string scoreString;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +25,6 @@ public class HighScore : MonoBehaviour
 		if (!hasUpdated)
 		{
 			loadHighScore();
-			Debug.Log("called");
 			hasUpdated = true;
 		}
     }
@@ -51,8 +51,9 @@ public class HighScore : MonoBehaviour
 		try
 		{
 			StreamReader input = new StreamReader("HighScore.txt");
-			scoreHigh = float.Parse(input.ReadLine());
-			highScore.text = "High Score:\n" + scoreHigh;
+			scoreString = input.ReadLine();
+			highScore.text = "High Score:\n" + scoreString;
+			scoreHigh = float.Parse(scoreString);
 			input.Close();
 		}
 		catch

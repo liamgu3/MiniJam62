@@ -24,7 +24,7 @@ public class Block : MonoBehaviour
     void Update()
     {
 
-		if (transform.position.y < -25)
+		if (transform.position.y < -15.0f)
 		{
 			blocksHolder.removeBlock();
 			Destroy(gameObject);

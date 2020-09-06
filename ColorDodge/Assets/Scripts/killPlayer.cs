@@ -40,8 +40,8 @@ public class killPlayer : MonoBehaviour
 	{
 		if (collision.gameObject.layer == 8)        //checks if colliding object is player
 		{
-			timer.GetComponent<stopWatch>().stopTime = true;
 			highScore.GetComponent<HighScore>().saveHighScore(Time.time - timer.GetComponent<stopWatch>().startTime);
+			timer.GetComponent<stopWatch>().stopTime = true;
 			if (playerKilled)
 			{
 				player2.GetComponent<Collider2D>().enabled = false;

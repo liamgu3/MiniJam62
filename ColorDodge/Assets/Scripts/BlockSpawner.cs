@@ -5,6 +5,7 @@ using UnityEngine;
 public class BlockSpawner : MonoBehaviour
 {
 	public GameObject blockPrefab;
+	private Renderer blockSpawnerColor;
 
 	public GameObject[] blocksHolder;
 	public int blockCount;
@@ -24,8 +25,11 @@ public class BlockSpawner : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-		blocksHolder = new GameObject[50];
+		blocksHolder = new GameObject[20];
 		blockCount = 0;
+
+
+		blockSpawnerColor = GetComponent<SpriteRenderer>();
 
 		colors = new Color32[5];
 		colors[0] = new Color32(255, 0, 255, 255);
@@ -35,11 +39,11 @@ public class BlockSpawner : MonoBehaviour
 		colors[4] = new Color32(255, 127, 0, 255);
 
 		positions = new Vector2[5];
-		positions[0] = new Vector2(-6, 11.75f);
-		positions[1] = new Vector2(-3, 11.75f);
-		positions[2] = new Vector2(0, 11.75f);
-		positions[3] = new Vector2(3, 11.75f);
-		positions[4] = new Vector2(6, 11.75f);
+		positions[0] = new Vector2(-6, 13.25f);
+		positions[1] = new Vector2(-3, 13.25f);
+		positions[2] = new Vector2(0, 13.25f);
+		positions[3] = new Vector2(3, 13.25f);
+		positions[4] = new Vector2(6, 13.25f);
 
 		spawnTimer = 1.0f;
 		difficultyTimer = 0.0f;
@@ -50,8 +54,23 @@ public class BlockSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		
-    }
+		if (blockCount % 2 == 0 && difficultyTimer > 32.0f)     //keeps blocks alligned
+		{
+			for (int i = 0; i < blockCount; i += 2)
+			{
+				if (blocksHolder[i].transform.position.y != blocksHolder[i + 1].transform.position.y)
+				{
+					blocksHolder[i].GetComponent<Block>().speed = 0.0f;
+					blocksHolder[i + 1].GetComponent<Block>().speed = 0.0f;
+					blocksHolder[i + 1].transform.position = new Vector2(blocksHolder[i + 1].transform.position.x, blocksHolder[i].transform.position.y);
+
+					blocksHolder[i].GetComponent<Block>().speed = speed1 * 1.5f;
+					blocksHolder[i + 1].GetComponent<Block>().speed = speed1 * 1.5f;
+					Debug.Log("block adjustment");
+				}
+			}
+		}
+	}
 
 	private void FixedUpdate()
 	{
@@ -119,6 +138,7 @@ public class BlockSpawner : MonoBehaviour
 	protected void CreateBlock(float speed)
 	{
 		addBlock(Instantiate(blockPrefab, position, color, speed));
+		blockSpawnerColor.material.color = color;
 	}
 
 	public static GameObject Instantiate(GameObject prefab, Vector2 position, Color32 color, float speed)
