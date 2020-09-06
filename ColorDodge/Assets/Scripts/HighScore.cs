@@ -13,10 +13,17 @@ public class HighScore : MonoBehaviour
 	public float scoreHigh;
 	private bool hasUpdated;
 	private string scoreString;
+
+	public GameObject newHighScore;
+	private AudioSource highScoreSound;
+	public bool higherScore;
+
     // Start is called before the first frame update
     void Start()
     {
 		hasUpdated = false;
+		highScoreSound = GetComponent<AudioSource>();
+		higherScore = false;
 	}
 
     // Update is called once per frame
@@ -37,12 +44,19 @@ public class HighScore : MonoBehaviour
 			{
 				StreamWriter output = new StreamWriter("HighScore.txt");
 				output.WriteLine(String.Format("{0:0.00}", Time.time - timer.startTime));
+				newHighScore.GetComponent<Text>().text = "New Highscore!\n" + String.Format("{0:0.00}", Time.time - timer.startTime);
+				newHighScore.SetActive(true);
 				output.Close();
 			}
 			catch
 			{
 				Debug.Log("Error saving score");
 			}
+			higherScore = true;
+		}
+		else
+		{
+			higherScore = false;
 		}
 	}
 
@@ -66,7 +80,13 @@ public class HighScore : MonoBehaviour
 	{
 		highScore = GetComponent<Text>();
 		timer = GameObject.Find("Timer").GetComponent<stopWatch>();
+		newHighScore.SetActive(false);
 
 		loadHighScore();
+	}
+
+	public void HighScoreSound()
+	{
+		highScoreSound.Play();
 	}
 }

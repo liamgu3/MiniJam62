@@ -99,6 +99,10 @@ public class killPlayer : MonoBehaviour
 
 		Destroy(player);
 		controls.SetActive(true);
+		if (highScore.GetComponent<HighScore>().higherScore)
+		{
+			highScore.GetComponent<HighScore>().HighScoreSound();
+		}
 	}
 
 	public void AssignPlayer(GameObject player2)
